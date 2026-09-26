@@ -1,0 +1,249 @@
+:root {
+  color-scheme: light dark;
+  --width-site: 720px;
+  --width-reading: 650px;
+  --width-breakout: 980px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --section-space: clamp(2rem, 5vw, 3.5rem);
+
+  /* Apple system typography: San Francisco (-apple-system) for text, SF Mono for code. */
+  --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  --font-body: var(--font-ui);
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Apple system colors (light). Grouped lists sit on --canvas-grouped. */
+  --canvas: #ffffff;
+  --canvas-grouped: #ffffff;
+  --surface: #f5f5f7;
+  --surface-alt: #f5f5f7;
+  --surface-hover: #ebebef;
+  --fill: #7878801f;
+  --fg: #1d1d1f;
+  --fg-muted: #68686d;
+  --fg-subtle: #68686d;
+  --border: #d2d2d7;
+  --action: #0066cc;
+  --focus: #0071e3;
+  --swift: #f05138;
+  --fg-86: #424245;
+  --fg-10: #d2d2d7;
+  --fg-08: #f0f0f3;
+  --tile-blue: #007aff;
+  --tile-green: #34c759;
+  --tile-orange: #ff9500;
+  --tile-indigo: #5856d6;
+  --glyph-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z'/%3E%3Cpath d='M4 8.5 12 13l8-4.5M12 13v7'/%3E%3C/svg%3E");
+  --tile-teal: #30b0c7;
+  --tile-pink: #ff2d55;
+  --tile-purple: #af52de;
+  --tile-red: #ff3b30;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-body: 1.0625rem;
+  --text-lead: 1.25rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --radius-s: 0.375rem;
+  --radius-m: 0.625rem;
+  --radius-l: 0.875rem;
+
+  --fig-surface: #fbfbfd;
+  --fig-dot: #e2e2e8;
+  --fig-line: #8e8e93;
+  --fig-ghost: #6e6e73;
+  --fig-relation: #248a3d;
+  --fig-relation-line: #248a3d88;
+  --fig-relation-soft: #248a3d12;
+  --fig-glow: 0 0 0 1px #0066cc40;
+
+  /* Code follows Xcode's default themes. */
+  --code-bg: #f5f5f7;
+  --code-fg: #1d1d1f;
+  --code-label-bg: #e8e8ed;
+  --code-inline-bg: #ececf0;
+  --code-line: #0000001a;
+  --code-shade: #00000024;
+  --fg-on-code: #5b5b60;
+  --code-focus: #0066cc;
+  --hl-keyword: #9b2393;
+  --hl-string: #c41a16;
+  --hl-comment: #5d6c79;
+  --hl-number: #1c00cf;
+  --hl-type: #0b4f79;
+  --hl-function: #326d74;
+  --hl-property: #326d74;
+  --note-bg: #0066cc12;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #000000;
+    --canvas-grouped: #000000;
+    --surface: #1d1d1f;
+    --surface-alt: #2d2d2f;
+    --surface-hover: #2c2c2e;
+    --fill: #7878805c;
+    --fg: #f5f5f7;
+    --fg-muted: #a1a1a6;
+    --fg-subtle: #a1a1a6;
+    --border: #424245;
+    --action: #2997ff;
+    --focus: #0a84ff;
+    --swift: #ff6a4d;
+    --fg-86: #d2d2d7;
+    --fg-10: #424245;
+    --fg-08: #2d2d2f;
+    --tile-blue: #0a84ff;
+    --tile-green: #30d158;
+    --tile-orange: #ff9f0a;
+    --tile-indigo: #5e5ce6;
+    --tile-teal: #40c8e0;
+    --tile-pink: #ff375f;
+    --tile-purple: #bf5af2;
+    --tile-red: #ff453a;
+    --fig-surface: #1d1d1f;
+    --fig-dot: #38383a;
+    --fig-line: #8e8e93;
+    --fig-ghost: #a1a1a6;
+    --fig-relation: #30d158;
+    --fig-relation-line: #30d15888;
+    --fig-relation-soft: #30d15820;
+    --fig-glow: 0 0 0 1px #ff8f6b66;
+    --code-bg: #1d1d1f;
+    --code-fg: #ffffffd9;
+    --code-label-bg: #2d2d2f;
+    --code-inline-bg: #2d2d2f;
+    --code-line: #ffffff26;
+    --code-shade: #ffffff30;
+    --fg-on-code: #a1a1a6;
+    --code-focus: #ffb59e;
+    --hl-keyword: #ff7ab2;
+    --hl-string: #ff8170;
+    --hl-comment: #7f8c98;
+    --hl-number: #d9c97c;
+    --hl-type: #6bdfff;
+    --hl-function: #78c2b3;
+    --hl-property: #78c2b3;
+    --note-bg: #2997ff1f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* No global smooth scrolling: Safari can drop keyboard scrolling (arrows, space) with it. The back-to-top button animates in JavaScript. The padding keeps anchor targets below the sticky header. */
+html {
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  margin: 0;
+  font: 1rem/1.6 var(--font-ui);
+  color: var(--fg);
+  background: var(--canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--action);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a,
+input,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Browsers without :focus-visible (older Safari) still show where the keyboard is. */
+@supports not selector(:focus-visible) {
+  :focus {
+    outline: 3px solid var(--focus);
+    outline-offset: 4px;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  font-size: clamp(2.125rem, 5vw, 3rem);
+  margin: 0 0 1.5rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Text for assistive technology only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

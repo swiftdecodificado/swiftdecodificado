@@ -1,0 +1,43 @@
+node_modules/
+/dist/
+/.astro/
+.cache/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.log
+npm-debug.log*
+/coverage/
+/test-results/
+/tmp/
+*.bak
+*.orig
+*.rej
+*.tmp
+*.swp
+*~
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.code-workspace
+.DS_Store
+._*
+Thumbs.db
+
+# Ideias e coisas que ainda quero fazer 
+# Guardo aqui meus rascunhos, ideias de artigos e coisas que ainda quero testar no projeto.
+# Enquanto estiver em contents/privado/, deixo tudo só na minha máquina, junto com os arquivos
+# que uso nesses conteúdos. Quando eu decidir publicar, `npm run publicar -- <slug>` move o artigo
+# para contents/caderno/.
+/contents/privado/
+/contents/en/privado/
+/examples/
+/prototypes/
+
+# Diagramas legados, laboratórios e figuras: ficam só nesta máquina.
+/public/diagrams/
+/public/labs/
+/public/figures/
+

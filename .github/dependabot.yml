@@ -1,0 +1,17 @@
+# Atualizações e alertas de segurança das dependências e das actions.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*']
+      lint:
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'globals']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

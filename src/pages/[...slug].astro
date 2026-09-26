@@ -1,0 +1,55 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { getArticles, type Article } from '../lib/articles';
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import ContentPage from '../components/shared/ContentPage.astro';
+import TopicPage from '../components/topic/TopicPage.astro';
+import { pageExists, topicRoute, topics, type Topic } from '../lib/topics';
+import { routeOf, type Language } from '../config/site';
+
+type RouteProps =
+  | { kind: 'article'; entry: Article }
+  | { kind: 'page'; entry: CollectionEntry<'sitePages'> }
+  | { kind: 'topic'; topic: Topic; language: Language; articles: Article[] };
+
+export async function getStaticPaths() {
+  function pathFor(canonical: string | undefined, id: string): string {
+    const pathname = canonical ? new URL(canonical).pathname : routeOf(id);
+    return pathname.replace(/^\/+|\/+$/g, '');
+  }
+
+  // Rascunhos só existem no `astro dev`; o build de produção não gera suas páginas.
+  const [articles, pages] = await Promise.all([
+    getArticles(({ data }) => import.meta.env.DEV || !data.draft),
+    getCollection('sitePages'),
+  ]);
+  const articlePaths = articles.flatMap((entry) => {
+    const slug = pathFor(entry.data.canonical, entry.id);
+    return slug ? [{ params: { slug }, props: { entry, kind: 'article' as const } }] : [];
+  });
+  const pagePaths = pages.flatMap((entry) => {
+    const { data } = entry;
+    if (data.isHome) return [];
+    const slug = pathFor(data.canonical, entry.id);
+    return slug ? [{ params: { slug }, props: { entry, kind: 'page' as const } }] : [];
+  });
+  // Uma página por assunto e idioma, só quando o idioma tem artigo publicado.
+  const published = articles.filter(({ data }) => !data.draft);
+  const topicPaths = topics.flatMap((topic) =>
+    (['pt-BR', 'en'] as const)
+      .filter((language) => pageExists(published, topic, language))
+      .map((language) => ({
+        params: { slug: topicRoute(topic, language).replace(/^\/+|\/+$/g, '') },
+        props: { kind: 'topic' as const, topic, language, articles: published },
+      })),
+  );
+  return [...articlePaths, ...pagePaths, ...topicPaths];
+}
+
+const props = Astro.props as RouteProps;
+const page = props.kind === 'page' ? props.entry : undefined;
+---
+
+{props.kind === 'topic' && <TopicPage topic={props.topic} language={props.language} articles={props.articles} />}
+{props.kind === 'article' && <ArticleLayout entry={props.entry} />}
+{page && <ContentPage entry={page} />}

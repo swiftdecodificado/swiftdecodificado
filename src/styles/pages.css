@@ -1,0 +1,826 @@
+/* Large-title pages: home, archive, about. */
+.home-intro {
+  padding: var(--section-space) 0 var(--space-8);
+}
+
+.home-intro h1,
+.page-header h1 {
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.page-header {
+  padding: var(--section-space) 0 var(--space-4);
+}
+
+.page-header .lead {
+  margin-bottom: var(--space-3);
+}
+
+/* About: the same large title and grouped lists as the rest of the site. */
+.about {
+  margin: var(--section-space) auto;
+  font: 1rem/1.55 var(--font-ui);
+}
+
+.about-photo {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 0 var(--space-5);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.about > header:first-of-type {
+  margin-bottom: var(--space-8);
+}
+
+.about > header:first-of-type h1 {
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 0 var(--space-4);
+}
+
+.about > header:first-of-type p {
+  margin: 0 0 var(--space-3);
+  max-width: var(--width-reading);
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* Sections read like the home feed: a hairline, the heading in a narrow column and the text beside it. */
+.about section {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  column-gap: var(--space-6);
+  margin: 0;
+  padding: var(--space-6) 0 var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+.about section > h2 {
+  margin: 0;
+  font: 700 1.05rem/1.3 var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+.about-card {
+  grid-column: 2;
+  max-width: var(--width-reading);
+}
+
+.about-card p {
+  margin: 0 0 var(--space-3);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.about-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about .about-card ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.about .about-card li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  margin: 0 0 var(--space-3);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+.about .about-card li::before {
+  content: counter(step, decimal-leading-zero);
+  font: 0.75rem/1.9 var(--font-mono);
+  color: var(--fg-muted);
+}
+
+.about .about-card li:last-child {
+  margin-bottom: 0;
+}
+
+.about-card .about-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.about section > .about-list {
+  grid-column: 2;
+}
+
+@media (max-width: 700px) {
+  .about section {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-3);
+  }
+
+  .about-card,
+  .about section > .about-list {
+    grid-column: 1;
+  }
+}
+
+/* Channels: one row per link, the whole row is the target. */
+.about .about-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about .about-list li {
+  margin: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 0.9rem;
+  column-gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+.about .about-list li:hover {
+  background: var(--surface-hover);
+}
+
+.about .about-list li a {
+  grid-column: 1;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.about .about-list li a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.about .about-list li p {
+  grid-column: 1;
+  margin: 0.15rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+
+.about .about-list li::after {
+  content: '';
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--fg-muted);
+  opacity: 0.6;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 16 16 8M9 8h7v7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 16 16 8M9 8h7v7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+@media (max-width: 700px) {
+  .about {
+    margin-top: 2rem;
+  }
+}
+
+/* Home: the notebook comes first, as a plain feed of notes separated by hairlines. */
+.notes,
+.studies,
+.standalone {
+  margin-bottom: var(--space-20);
+}
+
+.notes-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 0 var(--space-4);
+}
+
+.notes-head h2,
+.studies-head h2 {
+  margin: 0;
+  font: 700 1.3rem/1.2 var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.notes-head a {
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.note-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  column-gap: var(--space-4);
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--border);
+}
+
+.note-when {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font: 0.75rem/1.2 var(--font-mono);
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.note-topic {
+  color: var(--action);
+}
+
+.note-body h3 {
+  margin: 0 0 0.3rem;
+  font: 700 1.25rem/1.25 var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.note-body h3 a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+/* The whole entry is the link. */
+.note-body h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.note-row:hover h3 a {
+  color: var(--action);
+  text-decoration: underline;
+}
+
+.note-body p {
+  margin: 0;
+  color: var(--fg-muted);
+  max-width: 60ch;
+}
+
+.note-body .note-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.55rem;
+  font: 0.75rem/1.4 var(--font-mono);
+}
+
+.note-tags span:not(:last-child)::after {
+  content: '·';
+  margin: 0 0.5rem;
+}
+
+.note-read {
+  font: 0.75rem/1.2 var(--font-mono);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.note-read::after {
+  content: ' →';
+}
+
+/* Tracks: a personal sequence of study; each line says what it is, where it stands and where to continue. */
+.studies-head {
+  padding: 0 0 var(--space-4);
+}
+
+.studies-head p {
+  margin: 0.25rem 0 0;
+  color: var(--fg-muted);
+  max-width: 60ch;
+}
+
+.study-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+  margin: 0.35rem 0 0;
+  font: 0.75rem/1.4 var(--font-mono);
+  color: var(--fg-muted);
+}
+
+/* The state is a small mark plus a word, never colour alone. */
+.study-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--fg);
+}
+
+.study-state::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 2px solid var(--tile, var(--fg-muted));
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.study-progress {
+  display: block;
+  width: min(100%, 16rem);
+  height: 0.35rem;
+  margin-top: 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--border);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.study-progress::-webkit-progress-bar {
+  background: var(--border);
+}
+
+.study-progress::-webkit-progress-value {
+  background: var(--tile, var(--fg-muted));
+  border-radius: 999px;
+}
+
+.study-progress::-moz-progress-bar {
+  background: var(--tile, var(--fg-muted));
+  border-radius: 999px;
+}
+
+@media (max-width: 700px) {
+  .note-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.5rem;
+  }
+  .note-when {
+    flex-direction: row;
+    gap: 0.9rem;
+  }
+  .note-read {
+    grid-row: 3;
+  }
+}
+
+/* The whole-row links are stretched with ::after, so the focus ring has to be drawn on it. */
+.note-body h3 a:focus-visible {
+  outline: none;
+}
+
+.note-body h3 a:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-s);
+}
+
+.standalone .section-heading {
+  padding-top: 0;
+  padding-bottom: var(--space-3);
+}
+
+@media (max-width: 700px) {
+  .notes,
+  .studies,
+  .standalone {
+    margin-bottom: var(--space-12);
+  }
+}
+
+/* Featured: personal opinion pieces sit apart from the feed, in their own block. */
+.featured {
+  margin-bottom: var(--space-20);
+}
+
+.featured-heading {
+  margin: 0 0 var(--space-3);
+  padding: 0 var(--space-4);
+  font: 600 0.8125rem/1.3 var(--font-ui);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.featured-item {
+  position: relative;
+  padding: var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  corner-shape: squircle;
+}
+
+.featured-item:hover {
+  border-color: var(--fg-muted);
+}
+
+.featured-label {
+  margin: 0 0 var(--space-2);
+  font: 500 0.75rem/1 var(--font-mono);
+  color: var(--action);
+}
+
+.featured-item h3 {
+  margin: 0 0 var(--space-2);
+  font: 700 1.6rem/1.2 var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+.featured-item h3 a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+/* The whole block is the link. */
+.featured-item h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.featured-item h3 a:focus-visible {
+  outline: none;
+}
+
+.featured-item h3 a:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-l);
+}
+
+.featured-lead {
+  margin: 0 0 var(--space-4);
+  max-width: 56ch;
+  font-size: 1.0625rem;
+  color: var(--fg-muted);
+}
+
+.featured-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  font: 0.75rem/1.4 var(--font-mono);
+  color: var(--fg-muted);
+}
+
+.featured-read {
+  margin-left: auto;
+  color: var(--action);
+}
+
+.featured-read::after {
+  content: ' →';
+}
+
+@media (max-width: 700px) {
+  .featured {
+    margin-bottom: var(--space-12);
+  }
+  .featured-item {
+    padding: var(--space-5);
+  }
+  .featured-item h3 {
+    font-size: 1.4rem;
+  }
+  .featured-read {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+}
+
+/* Track page: the same large title, then a status line and the chapters in reading order. */
+.trail-page {
+  margin-bottom: var(--space-16);
+}
+
+.trail-head .eyebrow {
+  margin: 0 0 var(--space-3);
+}
+
+.trail-status {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.trail-status .study-meta {
+  margin-top: 0;
+}
+
+.chapter-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  column-gap: var(--space-3);
+  align-items: baseline;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border);
+}
+
+.chapter:first-child {
+  border-top: 0;
+}
+
+.chapter-no {
+  font: 500 1.35rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--action);
+}
+
+/* Subject pages: the article cover leads each row, where a track shows the chapter number. */
+.chapter .row-thumb {
+  align-self: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.75rem;
+  corner-shape: squircle;
+  object-fit: cover;
+}
+
+.chapter .row-thumb.topic-icon::before {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.chapter-body h2 {
+  margin: 0 0 0.25rem;
+  font: 700 1.15rem/1.3 var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.chapter-body h2 a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+/* The whole line is the link. */
+.chapter-body h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.chapter:hover h2 a {
+  color: var(--action);
+  text-decoration: underline;
+}
+
+.chapter-body h2 a:focus-visible {
+  outline: none;
+}
+
+.chapter-body h2 a:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-s);
+}
+
+.chapter-body p {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.9375rem;
+  max-width: 60ch;
+}
+
+.chapter-meta {
+  display: flex;
+  gap: 0.9rem;
+  font: 0.75rem/1.3 var(--font-mono);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.trail-remaining {
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  font: 0.8125rem/1.4 var(--font-mono);
+  color: var(--fg-muted);
+}
+
+.trail-back {
+  margin: var(--space-10) 0 0;
+}
+
+@media (max-width: 700px) {
+  .chapter {
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+    row-gap: 0.35rem;
+  }
+  .chapter-meta {
+    grid-column: 2;
+  }
+  .chapter .row-thumb {
+    width: 2.6rem;
+    height: 2.6rem;
+    align-self: start;
+  }
+  .chapter .row-thumb.topic-icon::before {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+/* Planned studies: what comes next, in the order it will be written. Muted, because none of it exists yet. */
+
+.next-studies {
+  margin-top: var(--space-10);
+}
+
+.next-heading {
+  margin: 0 0 var(--space-3);
+  font: 600 0.8125rem/1.3 var(--font-ui);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.next-list {
+  margin: 0;
+  padding: 0 0 0 3.25rem;
+  list-style-type: decimal-leading-zero;
+}
+
+.next-list li {
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--fg-muted);
+}
+
+.next-list li::marker {
+  font: 500 0.9rem var(--font-mono);
+  color: var(--fg-muted);
+}
+
+@media (max-width: 700px) {
+  .next-list {
+    padding-left: 2.6rem;
+  }
+}
+
+/* Apple topic cards: tracks and notebook subjects as rounded cards with an icon tile. */
+.topic-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.caderno .studies-head {
+  padding-bottom: var(--space-4);
+}
+
+.topic-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border-radius: 1.125rem;
+  corner-shape: squircle;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.topic-card:hover {
+  background: var(--surface-hover);
+}
+
+.topic-card .topic-icon {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.7rem;
+}
+
+.topic-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.topic-card-body strong {
+  font-size: 1.0625rem;
+}
+
+.topic-card-body span {
+  font: 0.75rem/1.2 var(--font-mono);
+  color: var(--fg-muted);
+}
+
+@media (max-width: 700px) {
+  .topic-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A subject that has no texts yet stays visible but disabled. */
+/* "Coming soon" cards stay readable: only the tile fades, the text keeps its contrast. */
+.topic-card.is-disabled {
+  cursor: default;
+}
+
+.topic-card.is-disabled .topic-icon {
+  opacity: 0.55;
+}
+
+.topic-card.is-disabled .topic-card-body,
+.topic-card.is-disabled .topic-card-body strong {
+  color: var(--fg-muted);
+}
+
+.topic-card.is-disabled:hover {
+  background: var(--surface);
+}
+
+.topic-card:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* 404: same large title as the other pages, with the way back and the public channels. */
+.not-found {
+  padding: var(--section-space) 0 var(--space-8);
+}
+
+.not-found h1 {
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: var(--space-8);
+}
+
+.not-found .button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--fg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.not-found .button.is-primary {
+  background: var(--action);
+  color: #fff;
+}
+
+.not-found-channels-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0 0 0.5rem;
+}
+
+.not-found-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.not-found-channels a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}

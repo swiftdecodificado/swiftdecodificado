@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articleUrl, formatDate, site, ui, type Language } from '../../config/site';
+import type { Article } from '../../lib/articles';
+import { coverThumb } from '../../lib/covers';
+import {
+  chapters,
+  isTrail,
+  pageExists,
+  pending,
+  stateOf,
+  topicName,
+  topicRoute,
+  topicStyle,
+  topicSummary,
+  topics,
+  type Topic,
+} from '../../lib/topics';
+
+interface Props {
+  topic: Topic;
+  language: Language;
+  articles: Article[];
+}
+
+const { topic, language, articles } = Astro.props;
+const text = ui[language];
+const other: Language = language === 'en' ? 'pt-BR' : 'en';
+const homeUrl = `${text.homeUrl}#caderno-title`;
+const trail = topic.trail as any;
+const track = isTrail(topic);
+
+let chosen = chapters(articles, topic.slug, language);
+if (!track && topic.sort === 'date') {
+  chosen = [...chosen].sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || b.id.localeCompare(a.id));
+}
+const total: number | undefined = trail?.total;
+const state = track ? stateOf(trail, chosen.length) : undefined;
+const count =
+  !track || chosen.length
+    ? track && total
+      ? `${chosen.length} ${text.of} ${total} ${text.notes}`
+      : `${chosen.length} ${chosen.length === 1 ? text.notesOne : text.notes}`
+    : total
+      ? `${total} ${text.notes} ${text.planned}`
+      : '';
+const upcoming = track ? pending(topic, articles, language) : [];
+const requires = trail?.requires ? topics.find((item) => item.slug === trail.requires) : undefined;
+const requiresLive = requires ? pageExists(articles, requires, language) : false;
+const reviewed = chosen
+  .map(({ data }) => data.updated)
+  .filter(Boolean)
+  .sort((a, b) => a!.getTime() - b!.getTime())
+  .at(-1);
+const remaining = track && total && chosen.length < total && !upcoming.length ? total - chosen.length : 0;
+
+const rows = await Promise.all(
+  chosen.map(async (article) => ({ article, thumb: track ? undefined : await coverThumb(article.data.cover) })),
+);
+
+const otherExists = pageExists(articles, topic, other);
+const canonical = `${site.origin}${topicRoute(topic, language)}`;
+const alternates = otherExists
+  ? (['en', 'pt-BR'] as const).map((item) => ({ language: item, url: `${site.origin}${topicRoute(topic, item)}` }))
+  : [];
+---
+
+<BaseLayout
+  title={topicName(topic, language)}
+  description={topicSummary(topic, language)}
+  language={language}
+  canonical={canonical}
+  alternates={alternates}
+  isTrailPage
+>
+  <div class="trail-page">
+    <header class="page-header trail-head" data-topic={topic.slug} style={topicStyle(topic)}>
+      <p class="eyebrow">{track ? text.trail : text.notebook}</p>
+      <h1>{topicName(topic, language)}</h1>
+      <p class="lead">{topicSummary(topic, language)}</p>
+    </header>
+    <div class="trail-status" data-topic={topic.slug} style={topicStyle(topic)}>
+      <p class="study-meta">
+        {state && <span class="study-state">{text[state as keyof typeof text]}</span>}
+        {count && <span>{count}</span>}
+        {requires && (
+          <span>
+            {text.after}{' '}
+            {requiresLive ? (
+              <a href={topicRoute(requires, language)}>{topicName(requires, language)}</a>
+            ) : (
+              topicName(requires, language)
+            )}
+          </span>
+        )}
+        {reviewed && (
+          <span>
+            {text.reviewed} {formatDate(reviewed, language)}
+          </span>
+        )}
+      </p>
+      {track && total && chosen.length > 0 && (
+        <progress class="study-progress" value={chosen.length} max={total} aria-label={count}>
+          {count}
+        </progress>
+      )}
+    </div>
+    {track ? (
+      <>
+        {rows.length > 0 && (
+          <ol class="chapter-list" role="list">
+            {rows.map(({ article }, index) => (
+              <li class="chapter">
+                <span class="chapter-no">{String(index + 1).padStart(2, '0')}</span>
+                <div class="chapter-body">
+                  <h2>
+                    <a href={articleUrl(article)}>{article.data.title}</a>
+                  </h2>
+                  <p>{article.data.description}</p>
+                </div>
+                <span class="chapter-meta">
+                  <span>{formatDate(article.data.date, language)}</span>
+                  <span>{article.data.readingMinutes} min</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
+        {upcoming.length > 0 && (
+          <section class="next-studies">
+            <h2 class="next-heading">{text.nextTitle}</h2>
+            <ol class="next-list" start={chosen.length + 1}>
+              {upcoming.map((title) => (
+                <li>{title}</li>
+              ))}
+            </ol>
+          </section>
+        )}
+        {remaining > 0 && (
+          <p class="trail-remaining">
+            {remaining} {text.notes} {text.remaining}
+          </p>
+        )}
+      </>
+    ) : (
+      <ol class="chapter-list is-rows" role="list">
+        {rows.map(({ article, thumb }) => (
+          <li class="chapter">
+            {thumb ? (
+              <img class="row-thumb" src={thumb} alt="" width="56" height="56" loading="lazy" />
+            ) : (
+              <span class="row-thumb topic-icon" aria-hidden="true"></span>
+            )}
+            <div class="chapter-body">
+              <h2>
+                <a href={articleUrl(article)}>{article.data.title}</a>
+              </h2>
+              <p>{article.data.description}</p>
+            </div>
+            <span class="chapter-meta">
+              <span>{formatDate(article.data.date, language)}</span>
+              <span>{article.data.readingMinutes} min</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    )}
+    <p class="trail-back">
+      <a href={homeUrl}>{text.allTrails}</a>
+    </p>
+  </div>
+</BaseLayout>

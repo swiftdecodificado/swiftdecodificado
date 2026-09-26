@@ -1,0 +1,127 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { homeContent } from '../../lib/home';
+import { isTrail, topicName, topicRoute, topicStyle, topics } from '../../lib/topics';
+import { articleUrl, ui, type Language } from '../../config/site';
+
+interface Props {
+  entry: CollectionEntry<'sitePages'>;
+}
+
+const { entry } = Astro.props;
+const language: Language = entry.data.language === 'en' ? 'en' : 'pt-BR';
+const text = ui[language];
+const { featured, latest, topicArticles } = await homeContent(language);
+const dateOf = (article: (typeof latest)[number]) => article.data.displayDate;
+---
+
+<section class="home-intro">
+  <h1>{entry.data.heroTitle}</h1>
+  <p class="lead">{entry.data.description}</p>
+</section>
+{featured.length > 0 && (
+  <section class="featured" aria-labelledby="featured-title">
+    <h2 id="featured-title" class="featured-heading">
+      {text.featured}
+    </h2>
+    {featured.map(({ article, label }) => (
+      <article class="featured-item">
+        <p class="featured-label">{label}</p>
+        <h3>
+          <a href={articleUrl(article)}>{article.data.title}</a>
+        </h3>
+        <p class="featured-lead">{article.data.description}</p>
+        <p class="featured-meta">
+          <span>{dateOf(article)}</span>
+          {article.data.readingMinutes && <span>{article.data.readingMinutes} min</span>}
+          <span class="featured-read">{text.read}</span>
+        </p>
+      </article>
+    ))}
+  </section>
+)}
+<section class="notes" aria-labelledby="notes-title">
+  <header class="notes-head">
+    <h2 id="notes-title">{text.latest}</h2>
+  </header>
+  <ol class="note-list" role="list">
+    {latest.map((article) => (
+      <li class="note-row">
+        <div class="note-when">
+          <span class="note-date">{dateOf(article)}</span>
+          <span class="note-topic">{article.data.topicLabel}</span>
+        </div>
+        <div class="note-body">
+          <h3>
+            <a href={articleUrl(article)}>{article.data.title}</a>
+          </h3>
+          <p>{article.data.description}</p>
+          {article.data.tags.length > 0 && (
+            <p class="note-tags">
+              {article.data.tags.map((tag) => (
+                <span>{tag}</span>
+              ))}
+            </p>
+          )}
+        </div>
+        {article.data.readingMinutes && <span class="note-read">{article.data.readingMinutes} min</span>}
+      </li>
+    ))}
+  </ol>
+</section>
+<section class="caderno" aria-labelledby="caderno-title">
+  <header class="studies-head">
+    <h2 id="caderno-title">{text.notebook}</h2>
+  </header>
+  <ul class="topic-cards" role="list">
+    {topics.filter(isTrail).map((topic) => {
+      const chosen = topicArticles(topic.slug);
+      const total = topic.trail?.total;
+      const count = chosen.length
+        ? total
+          ? `${chosen.length} ${text.of} ${total} ${text.notes}`
+          : `${chosen.length} ${chosen.length === 1 ? text.notesOne : text.notes}`
+        : `${text.soon}${total && language === 'pt-BR' ? ` · ${total} ${text.notes} ${text.planned}` : ''}`;
+      const content = (
+        <>
+          <span class="topic-icon" aria-hidden="true"></span>
+          <span class="topic-card-body">
+            <strong>{topicName(topic, language)}</strong>
+            <span>{count}</span>
+          </span>
+        </>
+      );
+      return (
+        <li>
+          {chosen.length ? (
+            <a class="topic-card" href={topicRoute(topic, language)} data-topic={topic.slug} style={topicStyle(topic)}>
+              {content}
+            </a>
+          ) : (
+            <span class="topic-card is-disabled" data-topic={topic.slug} style={topicStyle(topic)}>
+              {content}
+            </span>
+          )}
+        </li>
+      );
+    })}
+    {topics
+      .filter((topic) => !isTrail(topic) && topicArticles(topic.slug).length > 0)
+      .map((topic) => {
+        const count = topicArticles(topic.slug).length;
+        return (
+          <li>
+            <a class="topic-card" href={topicRoute(topic, language)} data-topic={topic.slug} style={topicStyle(topic)}>
+              <span class="topic-icon" aria-hidden="true"></span>
+              <span class="topic-card-body">
+                <strong>{topicName(topic, language)}</strong>
+                <span>
+                  {count} {count === 1 ? text.notesOne : text.notes}
+                </span>
+              </span>
+            </a>
+          </li>
+        );
+      })}
+  </ul>
+</section>

@@ -1,0 +1,129 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CoverFallback from '../components/shared/CoverFallback.astro';
+import { articleUrl, formatDate, ui } from '../config/site';
+import type { Article } from '../lib/articles';
+import { articlePage } from '../lib/article-page';
+
+interface Props {
+  entry: Article;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { language, Content, previous, next, topic, topicUrl, topicLabel, cover, socialCover } = await articlePage(entry);
+const text = ui[language];
+const { published, displayDate } = data;
+const breadcrumbTopic = topicLabel;
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  language={language}
+  canonical={data.canonical}
+  alternates={data.alternates}
+  ogType="article"
+  coverUrl={socialCover}
+  coverAlt={data.coverAlt}
+  isArticle
+  draft={data.draft}
+  noindex={data.draft}
+  published={published}
+  modified={data.updated ?? published}
+  tags={data.tags}
+  diagramStyles={data.diagramStyles}
+>
+  {data.draft ? (
+    <section class="page-header">
+      <h1>{text.draftTitle}</h1>
+      <p>{text.draftBody}</p>
+      <a href={text.homeUrl}>{text.home}</a>
+    </section>
+  ) : (
+    <div class="article-layout">
+      <article class="article" data-article>
+        <header class="article-header">
+          <nav class="breadcrumb" aria-label={text.breadcrumb}>
+            <ol role="list">
+              <li>
+                <a href={text.homeUrl}>{text.home}</a>
+              </li>
+              <li>
+                <a href={topicUrl}>{breadcrumbTopic}</a>
+              </li>
+              <li aria-current="page">{data.title}</li>
+            </ol>
+          </nav>
+          <h1>{data.title}</h1>
+          <p class="lead">{data.description}</p>
+          <div class="metadata">
+            <a rel="author" href={text.aboutUrl}>
+              {'Luan Rodrigues'}
+            </a>
+            <span aria-hidden="true">/</span>
+            <time datetime={published.toISOString().slice(0, 10)}>{displayDate}</time>
+            {data.updated && (
+              <>
+                <span aria-hidden="true">/</span>
+                <span>
+                  {language === 'en' ? 'Reviewed on' : 'Revisado em'}{' '}
+                  <time datetime={data.updated.toISOString().slice(0, 10)}>{formatDate(data.updated, language)}</time>
+                </span>
+              </>
+            )}
+            {data.readingMinutes && (
+              <>
+                <span aria-hidden="true">/</span>
+                <span>{data.readingMinutes} min</span>
+              </>
+            )}
+          </div>
+        </header>
+        {cover ? (
+          <img
+            class="article-cover"
+            src={cover.src}
+            alt={data.coverAlt ?? ''}
+            width={cover.width}
+            height={cover.height}
+          />
+        ) : (
+          <CoverFallback topic={topic} />
+        )}
+        <div class="prose article-body">
+          <Content />
+        </div>
+        <footer class="article-end">
+          <ul class="article-tags" role="list" aria-label={text.tagsLabel}>
+            {data.tags.map((tag) => (
+              <li>
+                <span>{tag}</span>
+              </li>
+            ))}
+          </ul>
+          {(previous || next) && (
+            <nav
+              class="article-pager"
+              aria-label={language === 'en' ? 'Articles on the same subject' : 'Artigos do mesmo assunto'}
+            >
+              {previous && (
+                <a rel="prev" href={articleUrl(previous)}>
+                  <span>{text.previous}</span>
+                  <strong>{previous.data.title}</strong>
+                </a>
+              )}
+              {next && (
+                <a rel="next" href={articleUrl(next)}>
+                  <span>{text.next}</span>
+                  <strong>{next.data.title}</strong>
+                </a>
+              )}
+            </nav>
+          )}
+          <a href={topicUrl}>← {breadcrumbTopic}</a>
+        </footer>
+      </article>
+    </div>
+  )}
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomePage from '../home/HomePage.astro';
+import { languageOf, ui } from '../../config/site';
+
+interface Props {
+  entry: CollectionEntry<'sitePages'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const language = languageOf(data.language);
+const { Content } = await render(entry);
+const isHome = data.isHome === true;
+const isAbout = data.isAbout === true;
+const title = data.title ?? (isAbout ? ui[language].about : ui[language].home);
+const description = data.description ?? '';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  language={language}
+  canonical={data.canonical}
+  alternates={data.alternates}
+  ogType={data.ogType}
+  isHome={isHome}
+  isAbout={isAbout}
+  isTrailPage={data.isTrailPage}
+>
+  {isHome ? (
+    <HomePage entry={entry} />
+  ) : (
+    <div class:list={{ about: isAbout, prose: isAbout, 'trail-page': data.isTrailPage }}>
+      {data.photo && <img class="about-photo" src={data.photo} alt={data.photoAlt ?? ''} width="96" height="96" />}
+      <Content />
+    </div>
+  )}
+</BaseLayout>

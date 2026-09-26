@@ -1,0 +1,14 @@
+---
+import { site, ui, type Language } from '../../config/site';
+
+const { language } = Astro.props as { language: Language };
+---
+
+<footer class="site-footer shell">
+  <p>Luan Rodrigues</p>
+  <nav aria-label={ui[language].channels}>
+    {site.links.map((link) => (
+      <a href={link.href}>{link.label}</a>
+    ))}
+  </nav>
+</footer>

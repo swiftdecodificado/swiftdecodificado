@@ -1,0 +1,173 @@
+{
+  "_comment": "Fonte única dos assuntos. tile: blue, green, orange, indigo, teal, pink, purple ou red. sort: readingOrder (crescente) ou date (mais recente primeiro). glyph: caminhos SVG (viewBox 24, traço); sem glyph usa o ícone padrão. trail marca uma trilha (sumário, próximos títulos previstos, total, requires); sem trail é um assunto do caderno.",
+  "topics": [
+    {
+      "slug": "fundamentos",
+      "pt": "Fundamentos de Swift",
+      "en": "Swift fundamentals",
+      "tile": "blue",
+      "sort": "readingOrder",
+      "glyph": "<path d='M9 4c-2 0-3 1-3 3v2c0 1.5-1 2.5-2.5 3 1.5.5 2.5 1.5 2.5 3v2c0 2 1 3 3 3'/><path d='M15 4c2 0 3 1 3 3v2c0 1.5 1 2.5 2.5 3-1.5.5-2.5 1.5-2.5 3v2c0 2-1 3-3 3'/>",
+      "trail": {
+        "summary": {
+          "pt": "Os fundamentos de Swift com precisão: valores, tipos, coleções, closures, protocolos, erros e o que acontece por baixo.",
+          "en": "Swift fundamentals, precisely: values, types, collections, closures, protocols, errors and what happens underneath."
+        },
+        "next": [
+          "lazy em Swift: quando criar um valor só quando ele for usado?",
+          "Controle de acesso entre módulos: public, package e open",
+          "Result: guardar sucesso ou falha como um valor"
+        ]
+      }
+    },
+    {
+      "slug": "estruturas-de-dados",
+      "pt": "Estruturas de dados",
+      "en": "Data structures",
+      "tile": "green",
+      "summary": {
+        "pt": "Estruturas de dados em Swift: o que cada uma garante e quanto custa cada operação.",
+        "en": "Data structures in Swift: what each one guarantees and what each operation costs."
+      },
+      "sort": "readingOrder",
+      "glyph": "<rect x='4' y='4' width='16' height='5' rx='1.5'/><rect x='4' y='11' width='16' height='5' rx='1.5'/><path d='M8 19.5h8'/>"
+    },
+    {
+      "slug": "memoria",
+      "pt": "Memória",
+      "en": "Memory",
+      "tile": "orange",
+      "summary": {
+        "pt": "Memória em Swift: o que mantém um objeto vivo, ciclos de referência e o que o compilador avisa.",
+        "en": "Memory in Swift: what keeps an object alive, reference cycles and what the compiler warns about."
+      },
+      "sort": "readingOrder",
+      "glyph": "<rect x='6' y='6' width='12' height='12' rx='2'/><path d='M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3'/>"
+    },
+    {
+      "slug": "notas",
+      "pt": "Notas",
+      "en": "Notes",
+      "tile": "red",
+      "summary": {
+        "pt": "Notas e opiniões sobre aprender e trabalhar com iOS.",
+        "en": "Notes and opinions on learning and working with iOS."
+      },
+      "sort": "date",
+      "glyph": "<path d='M5 4h10l4 4v12H5z'/><path d='M15 4v4h4M8 12h8M8 16h5'/>"
+    },
+    {
+      "slug": "swiftui",
+      "pt": "SwiftUI",
+      "en": "SwiftUI",
+      "tile": "indigo",
+      "sort": "readingOrder",
+      "glyph": "<rect x='4' y='8' width='12' height='12' rx='3'/><path d='M9 4.5h8a3 3 0 0 1 3 3V15'/>",
+      "trail": {
+        "total": 11,
+        "summary": {
+          "pt": "SwiftUI a partir de uma tela real de extrato: estado, identidade dos itens, navegação e edição com rascunho.",
+          "en": "SwiftUI through a real statement screen: state, item identity, navigation and draft editing."
+        },
+        "requires": "fundamentos",
+        "next": [
+          "Estado em SwiftUI: quem guarda o valor que mudou?",
+          "Identidade em SwiftUI: por que o estado desta linha recomeçou?",
+          "Observation: quais mudanças esta view acompanha?",
+          "Environment: até onde esta dependência está disponível?",
+          "Navegação por valor: qual caminho leva ao detalhe da transação?",
+          "Editar sem confirmar: onde deve viver o rascunho?",
+          "Uma tela vazia pode estar certa: o que a interface precisa explicar?",
+          "A linha do extrato continua legível sem o layout original?",
+          "Lab: um extrato SwiftUI que preserva estado e regras"
+        ]
+      }
+    },
+    {
+      "slug": "uikit",
+      "pt": "UIKit com View Code",
+      "en": "UIKit in code",
+      "tile": "pink",
+      "sort": "readingOrder",
+      "glyph": "<rect x='7' y='3' width='10' height='18' rx='2.5'/><path d='M11 18h2'/>",
+      "trail": {
+        "total": 10,
+        "summary": {
+          "pt": "O mesmo extrato em UIKit, só com código: hierarquia de views, Auto Layout, eventos e listas.",
+          "en": "The same statement screen in UIKit, code only: view hierarchy, Auto Layout, events and lists."
+        },
+        "requires": "fundamentos",
+        "next": [
+          "Uma tela sem storyboard",
+          "A view carregou. A tela apareceu?",
+          "Auto Layout: o que determina o tamanho desta linha?",
+          "Quem responde ao toque?",
+          "Uma célula pode mostrar outra transação",
+          "O registro mudou, mas o ID continua igual",
+          "Push e present: o que acontece com as telas?",
+          "Salvar e cancelar precisam produzir resultados diferentes",
+          "O extrato continua utilizável com outra forma de leitura?",
+          "Lab: Extrato UIKit: consultar, abrir e editar"
+        ]
+      }
+    },
+    {
+      "slug": "arquitetura",
+      "pt": "Arquitetura iOS",
+      "en": "iOS architecture",
+      "tile": "purple",
+      "sort": "readingOrder",
+      "glyph": "<rect x='3' y='13' width='7' height='7' rx='1.5'/><rect x='14' y='13' width='7' height='7' rx='1.5'/><rect x='8.5' y='4' width='7' height='7' rx='1.5'/>",
+      "trail": {
+        "total": 9,
+        "summary": {
+          "pt": "Onde ficam as regras: quem decide, quem constrói as dependências e o que os testes protegem.",
+          "en": "Where the rules live: who decides, who builds the dependencies and what tests protect."
+        },
+        "requires": "swiftui",
+        "next": [
+          "Antes de separar o código, o que precisa continuar funcionando?",
+          "Quando uma mudança espalha código",
+          "Dependências sem framework: quem escolhe a implementação?",
+          "MVVM: qual decisão pertence ao modelo de apresentação?",
+          "Repository: quem oferece acesso às transações?",
+          "A mesma dependência, por quanto tempo?",
+          "Quando a navegação ganha uma decisão própria",
+          "O teste continua útil depois da refatoração?",
+          "Lab: Uma mudança de requisito no extrato"
+        ]
+      }
+    },
+    {
+      "slug": "estudos-praticos",
+      "pt": "Estudos práticos",
+      "en": "Practical studies",
+      "tile": "teal",
+      "sort": "readingOrder",
+      "glyph": "<path d='M14.5 6.5 17.5 9.5M4 20l9.5-9.5M13.5 4.5a4.2 4.2 0 0 0 6 6l.5-.5-2.5-2.5-2-2z'/>",
+      "trail": {
+        "archivePlanned": false,
+        "total": 3,
+        "summary": {
+          "pt": "Três problemas de engenharia iOS investigados com medição e código que roda: busca assíncrona, desempenho de lista e migração para SwiftUI.",
+          "en": "Three iOS engineering problems investigated with measurements and code that runs: async search, list performance and a SwiftUI migration."
+        },
+        "next": [
+          "Digitei uma busca. O app respondeu à anterior.",
+          "A lista está travando. Vamos medir antes de reescrever.",
+          "SwiftUI no app UIKit: migrando uma tela sem transformar tudo em uma reescrita."
+        ]
+      }
+    }
+  ],
+  "featured": [
+    {
+      "label": {
+        "pt": "Opinião",
+        "en": "Opinion"
+      },
+      "pt": "desafios-aprender-ios-em-2026",
+      "en": "learning-ios-in-2026"
+    }
+  ]
+}

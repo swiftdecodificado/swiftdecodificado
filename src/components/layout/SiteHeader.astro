@@ -1,0 +1,47 @@
+---
+import { site, ui, type Language } from '../../config/site';
+
+interface Props {
+  language: Language;
+  alternates?: { language: string; url: string }[];
+  isArticle?: boolean;
+  isTrailPage?: boolean;
+  isAbout?: boolean;
+}
+
+const { language, alternates = [], isArticle = false, isTrailPage = false, isAbout = false } = Astro.props;
+const text = ui[language];
+const otherLanguage = language === 'en' ? 'pt-BR' : 'en';
+// O link de idioma só aparece quando a página tem tradução publicada.
+const languageTarget = alternates.find((alternate) => alternate.language === otherLanguage)?.url;
+---
+
+<a class="skip-link" href="#main">
+  {text.skip}
+</a>
+<header class="site-header shell">
+  <a class="wordmark" href={text.homeUrl} aria-label={`${'Luan Rodrigues'} · Swift Decodificado`}>
+    <img class="wordmark-avatar" src={site.avatar} alt="" width="32" height="32" />
+    <span class="wordmark-text">
+      <span class="wordmark-name">Luan Rodrigues</span>
+    </span>
+  </a>
+  <nav aria-label={text.navigation}>
+    <a href={`${text.homeUrl}#caderno-title`} aria-current={isArticle || isTrailPage ? 'true' : undefined}>
+      {text.notebook}
+    </a>
+    <a href={text.aboutUrl} aria-current={isAbout ? 'page' : undefined}>
+      {text.about}
+    </a>
+    {languageTarget && (
+      <a
+        class="language-link"
+        href={languageTarget}
+        lang={otherLanguage}
+        aria-label={language === 'en' ? 'Ler em português' : 'Read in English'}
+      >
+        {language === 'en' ? 'PT' : 'EN'}
+      </a>
+    )}
+  </nav>
+</header>

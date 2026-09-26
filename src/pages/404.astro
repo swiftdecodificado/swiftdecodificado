@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, ui } from '../config/site';
+
+// O GitHub Pages serve este arquivo (404.html) para qualquer rota inexistente, então ele só existe em português.
+const text = ui['pt-BR'];
+---
+
+<BaseLayout title="Página não encontrada" description={text.notFound} language="pt-BR" canonical={null} noindex>
+  <section class="not-found">
+    <p class="eyebrow">404</p>
+    <h1>Página não encontrada</h1>
+    <p class="lead">{text.notFound} O endereço pode ter mudado, ou o artigo ainda não foi publicado.</p>
+    <div class="not-found-actions">
+      <a class="button is-primary" href={text.homeUrl}>
+        {text.home}
+      </a>
+      <a class="button" href={`${text.homeUrl}#caderno-title`}>
+        {text.notebook}
+      </a>
+    </div>
+    <h2 class="not-found-channels-title">{text.channels}</h2>
+    <ul class="not-found-channels" role="list">
+      {site.links.map((link) => (
+        <li>
+          <a href={link.href}>{link.label}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

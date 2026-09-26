@@ -1,0 +1,202 @@
+/* Page chrome: a translucent navigation bar like UIKit's, and a quiet footer. */
+/* The header and footer keep one width on every page; only the article body breaks out. */
+:root {
+  --width-chrome: 720px;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body.page-article {
+  --width-site: 1180px;
+}
+
+body.page-list {
+  background: var(--canvas-grouped);
+}
+
+.shell {
+  width: min(var(--width-site), calc(100% - 2 * var(--gutter)));
+  margin-inline: auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  min-height: 3.5rem;
+  padding-inline: max(var(--gutter), calc((100% - var(--width-chrome)) / 2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: color-mix(in srgb, var(--canvas) 78%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .site-header {
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+body.page-list .site-header {
+  background: color-mix(in srgb, var(--canvas-grouped) 78%, transparent);
+}
+
+.wordmark {
+  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  text-decoration: none;
+  font: 600 1.0625rem/1.2 var(--font-heading);
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+/* The author's name leads; the notebook's name sits under it. */
+.wordmark-avatar {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.wordmark-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.1;
+}
+
+/* App-icon tile in Swift orange. */
+
+.site-header nav,
+.site-footer nav {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.site-header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--fg-muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.site-header nav a:hover {
+  color: var(--fg);
+}
+
+/* The current page must not change the text width, or the navigation would shift between pages. */
+.site-header nav a[aria-current='page'],
+.site-header nav a[aria-current='true'] {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--swift);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
+}
+
+.site-header .language-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-left: 1px solid var(--border);
+  padding-left: 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: -100px;
+  left: 1rem;
+  background: var(--surface);
+  color: var(--fg);
+  border-radius: var(--radius-m);
+  padding: 0.7rem 1rem;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.site-footer {
+  width: min(var(--width-chrome), calc(100% - 2 * var(--gutter)));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+.site-footer a:hover {
+  color: var(--fg);
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    min-height: 3.25rem;
+    gap: 0.75rem;
+  }
+  .wordmark {
+    font-size: 1rem;
+    gap: 0.5rem;
+  }
+  .site-header nav {
+    gap: 0.9rem;
+    flex-wrap: nowrap;
+  }
+  .site-header nav a {
+    font-size: 0.875rem;
+  }
+  .site-header .language-link {
+    padding-left: 0.75rem;
+    font-size: 0.75rem;
+  }
+  .site-footer {
+    margin-top: 3rem;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .skip-link {
+    display: none;
+  }
+  .shell {
+    width: 100%;
+  }
+}

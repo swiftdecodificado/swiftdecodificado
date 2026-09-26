@@ -1,0 +1,92 @@
+# Builds the static Astro site and publishes dist/ to GitHub Pages on pushes to main.
+# `verify` (formato, lint, Astro check e testes) and `build` run in parallel; `deploy` waits for both.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Mínimo por padrão; só o job de deploy recebe permissão de escrita no Pages.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # Sem scripts: o postinstall baixa o Chrome dos diagramas, que check e testes não usam.
+      - run: npm ci --ignore-scripts
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check Astro
+        run: npm run check
+
+      - name: Test
+        run: npm test
+
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Cache Chrome (used to render diagrams)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: chrome-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies (also downloads the Chrome used for diagrams)
+        run: npm ci
+
+      # Depois do npm ci, que apaga node_modules. Os SVGs de diagrama são endereçados pelo hash do fonte e das ferramentas, então um cache
+      # antigo é seguro: só diagramas novos ou alterados voltam a abrir o Chrome (~25 s no total).
+      - name: Cache rendered diagrams
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro/mermaid
+          key: diagrams-${{ hashFiles('package-lock.json', 'src/markdown/diagrams/**') }}-${{ github.sha }}
+          restore-keys: diagrams-${{ hashFiles('package-lock.json', 'src/markdown/diagrams/**') }}-
+
+      - name: Build for production
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: [verify, build]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
