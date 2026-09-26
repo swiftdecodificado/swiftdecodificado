@@ -38,7 +38,7 @@
     "htmlparser2": "10.0.0",
     "prettier": "3.9.9",
     "prettier-plugin-astro": "1.1.0",
-    "typescript": "6.0.2",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.70.1",
     "vitest": "3.2.7"
   },
