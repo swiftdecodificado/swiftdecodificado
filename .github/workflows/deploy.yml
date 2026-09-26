@@ -54,7 +54,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Cache Chrome (used to render diagrams)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/puppeteer
           key: chrome-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -65,7 +65,7 @@ jobs:
       # Depois do npm ci, que apaga node_modules. Os SVGs de diagrama são endereçados pelo hash do fonte e das ferramentas, então um cache
       # antigo é seguro: só diagramas novos ou alterados voltam a abrir o Chrome (~25 s no total).
       - name: Cache rendered diagrams
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: node_modules/.astro/mermaid
           key: diagrams-${{ hashFiles('package-lock.json', 'src/markdown/diagrams/**') }}-${{ github.sha }}
